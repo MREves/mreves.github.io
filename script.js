@@ -11,8 +11,10 @@ for (let file of data.files) {
 
 onload = (event) => {
   const table = document.getElementById("table");
-  const image1 = document.createElement("img")
-  image1.src = path + data.files[0];
 
-  table.appendChild(image1);
+  for (let file of data.files) {
+    const image = document.createElement("img")
+    image.src = path + file;
+    table.appendChild(image);
+  }
 }
