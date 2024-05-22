@@ -1,20 +1,19 @@
 import data from "./card-set-1/data.json" with { type: "json" };
 
-const path = "./card-set-1/";
-const numberOfCards = data.files.length;
+const path = "card-set-1";
+const numberOfCards = data[path].files.length;
 
 console.log("numberOfCards", numberOfCards);
-
-for (let file of data.files) {
-  console.log(file);
-}
 
 onload = (event) => {
   const table = document.getElementById("table");
 
-  for (let file of data.files) {
+  for (let file of data[path].files) {
+    console.log(file)
     const image = document.createElement("img")
-    image.src = path + file;
+    image.src = `https://raw.githubusercontent.com/MREves/mreves.github.io/main/${path}/${file}`;
+    image.style.width = "20%";
+    image.style.padding = "10px";
     table.appendChild(image);
   }
 }
