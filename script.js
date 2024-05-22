@@ -1,4 +1,4 @@
-import data from "./card-set-1/data.json" assert { type: "application/json" };
+import data from "./card-set-1/data.json" with { type: "json" };
 
 const path = "./card-set-1/";
 const numberOfCards = data.files.length;
