@@ -1,4 +1,4 @@
-const data = require("data.json");
+const data = require("./card-set-1/data.json");
 
 const numberOfCards = data.files.length;
 
