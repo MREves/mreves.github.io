@@ -11,7 +11,7 @@ onload = (event) => {
   for (let file of data[path].files) {
     console.log(file)
     const image = document.createElement("img")
-    image.src = `https://raw.githubusercontent.com/MREves/mreves.github.io/main/${path}/${file}`;
+    image.src = `https://raw.githubusercontent.com/MREves/mreves.github.io/main/card-data/${path}/${file}`;
     image.style.width = "20%";
     image.style.padding = "10px";
     table.appendChild(image);
