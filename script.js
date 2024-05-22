@@ -1,6 +1,6 @@
-import data from "./card-set-1/data.json" with { type: "json" };
+import data from "./card-data/data.json" with { type: "json" };
 
-const path = "card-set-1";
+const path = "card-set-2";
 const numberOfCards = data[path].files.length;
 
 console.log("numberOfCards", numberOfCards);
