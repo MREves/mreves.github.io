@@ -9,7 +9,7 @@ import data from "./card-data/data.json" with { type: "json" };
 
 let clickNumber, selectionClicks, totalClicks, clicks, path, numberOfCards, cardStates;
 
-const cardBack = "https://raw.githubusercontent.com/MREves/mreves.github.io/main/card-data/000_pairs_image_cardback.jpg";
+const cardBackSrc = "https://raw.githubusercontent.com/MREves/mreves.github.io/main/card-data/000_pairs_image_cardback.jpg";
 
 // ----------------
 // create functions:
@@ -17,14 +17,18 @@ const cardBack = "https://raw.githubusercontent.com/MREves/mreves.github.io/main
 
 const flip = (index, isFlipped) => {
   const card = cardStates[index];
-  const domElement = document.getElementById(index);
   card.isFlipped = isFlipped
-  card.isFlipped
-    ? domElement.src = `https://raw.githubusercontent.com/MREves/mreves.github.io/main/card-data/${path}/${card.filename}`
-    : domElement.src = cardBack
+  
+  const cardElement = document.getElementById(`container-${index}`);
+  const currentClass = cardElement.getAttribute("class");
+  let newClass = card.isFlipped
+    ? `${currentClass} flipped`
+    : currentClass.replace(" flipped", "");
+
+  cardElement.setAttribute("class", newClass);
 }
 
-const onImageClick = (index) => {
+const onCardClick = (index) => {
   const card = cardStates[index];
   if(card.isFlipped) {
     return;
@@ -59,6 +63,7 @@ const onImageClick = (index) => {
     clickNumber = 0
     totalClicks--;
   }
+
 
   setScoreText();
 }
@@ -107,6 +112,10 @@ const reset = () => {
   }));
 }
 
+const getImageSrc = (filename) => 
+  `https://raw.githubusercontent.com/MREves/mreves.github.io/main/card-data/${path}/${filename}`;
+
+
 const dealCards = ()=>
 {
   reset()
@@ -118,18 +127,38 @@ const dealCards = ()=>
   table.innerHTML = "";
 
   cardImageArray.forEach((filename, index) => {
-    // Create DOM element containing image
-    const image = document.createElement("img");
-    image.id = index;
-    image.src = cardBack;
-    image.style.width = "20%";
-    image.style.padding = "10px";
-
-    image.addEventListener("click", (event) => onImageClick(index))
-
     cardStates[index].filename = filename;
+
+    const imgBack = document.createElement("img");
+    imgBack.id = `back-${index}`;
+    imgBack.src = cardBackSrc;
+    imgBack.setAttribute("class", "image-back");
     
-    table.appendChild(image);    
+    const flipCardBack = document.createElement("div")
+    flipCardBack.setAttribute("class", "flip-card-back");
+    flipCardBack.appendChild(imgBack);
+
+    const imgPicture = document.createElement("img");
+    imgPicture.id = `picture-${index}`;
+    imgPicture.src = getImageSrc(filename);
+    imgBack.setAttribute("class", "image-picture");
+    
+    const flipCardPicture = document.createElement("div")
+    flipCardPicture.setAttribute("class", "flip-card-picture"); // flip-card-front
+    flipCardPicture.appendChild(imgPicture);
+
+    const flipCardInner = document.createElement("div")
+    flipCardInner.setAttribute("class", "flip-card-inner");
+    flipCardInner.appendChild(flipCardPicture);
+    flipCardInner.appendChild(flipCardBack);
+
+    const flipCard = document.createElement("div")
+    flipCard.id = `container-${index}`;
+    flipCard.setAttribute("class", "flip-card");
+    flipCard.appendChild(flipCardInner);
+    flipCard.addEventListener("click", (event) => onCardClick(index))
+    
+    table.appendChild(flipCard);
   })
 };
 
