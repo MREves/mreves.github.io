@@ -3,25 +3,13 @@
 // ----------------
 import data from "./card-data/data.json" with { type: "json" };
 
-const cardBack = "https://raw.githubusercontent.com/MREves/mreves.github.io/main/card-data/000_pairs_image_cardback.jpg";
-const path = "card-set-2";
-const numberOfCards = data[path].files.length;
-
 // ----------------
 // Set up global variables:
 // ----------------
 
-let clickNumber = 0;
-let selectionClicks = 0;
-let totalClicks = 0;
-let clicks = 0;
+let clickNumber, selectionClicks, totalClicks, clicks, path, numberOfCards, cardStates;
 
-let cardStates = Array.from(new Array(12), (element, index) => ({
-  index,
-  filename: "",
-  isFlipped: false,
-  isMatched: false
-}));
+const cardBack = "https://raw.githubusercontent.com/MREves/mreves.github.io/main/card-data/000_pairs_image_cardback.jpg";
 
 // ----------------
 // create functions:
@@ -36,16 +24,15 @@ const flip = (index, isFlipped) => {
     : domElement.src = cardBack
 }
 
-const onClick = (index) => {
+const onImageClick = (index) => {
   const card = cardStates[index];
   if(card.isFlipped) {
     return;
   }
   
   totalClicks++;
-  document.getElementById("score").innerText = `Clicks: ${totalClicks}`;
   
-if (clickNumber === 0) {
+  if (clickNumber === 0) {
     console.log("First click", card.filename)
     flip(index, true);
     clickNumber++
@@ -68,9 +55,18 @@ if (clickNumber === 0) {
     cardStates
       .filter(c => c.isFlipped && !c.isMatched)
       .forEach((card) => flip(card.index, false));
-      
-      clickNumber = 0
+    
+    clickNumber = 0
+    totalClicks--;
   }
+
+  setScoreText();
+}
+
+const onSelectChange = (deckName) => {
+  console.log(deckName);
+  path = deckName;
+  dealCards();
 }
 
 const shuffle = (cardImages) => {
@@ -87,12 +83,40 @@ const shuffle = (cardImages) => {
   return cardImages;
 }
 
-onload = (event) => {
+const setScoreText = () => {
+  document.getElementById("score").innerText = `Clicks: ${totalClicks}`;
+}
+
+const reset = () => {
+  clickNumber = 0;
+  selectionClicks = 0;
+  totalClicks = 0;
+  clicks = 0
+  
+  setScoreText();
+
+  const deckNames = Object.keys(data)
+  path = deckNames[0];
+  numberOfCards = data[path].files.length;
+
+  cardStates = Array.from(new Array(numberOfCards * 2), (element, index) => ({
+    index,
+    filename: "",
+    isFlipped: false,
+    isMatched: false
+  }));
+}
+
+const dealCards = ()=>
+{
+  reset()
   // create and randomise a new array
   const gameImages = [...data[path].files, ...data[path].files];
   const cardImageArray = shuffle(gameImages);
 
   const table = document.getElementById("table");
+  table.innerHTML = "";
+
   cardImageArray.forEach((filename, index) => {
     // Create DOM element containing image
     const image = document.createElement("img");
@@ -101,10 +125,26 @@ onload = (event) => {
     image.style.width = "20%";
     image.style.padding = "10px";
 
-    image.addEventListener("click", (event) => onClick(index))
+    image.addEventListener("click", (event) => onImageClick(index))
 
     cardStates[index].filename = filename;
     
     table.appendChild(image);    
+  })
+};
+
+onload = (event) => {
+  const deckNames = Object.keys(data)
+
+  const selectBox = document.getElementById("cards")
+  deckNames.forEach((deckName)=>{
+    const option = document.createElement("option");
+    option.value = deckName;
+    option.innerHTML = deckName;
+    
+    selectBox.appendChild(option);
   });
+    
+  selectBox.addEventListener("change", (event) => onSelectChange(selectBox.value));
+  dealCards()
 }
