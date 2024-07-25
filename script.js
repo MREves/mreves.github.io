@@ -11,6 +11,7 @@ let clickNumber, selectionClicks, totalClicks, clicks, path, numberOfCards, card
 
 const cardBackSrc = "https://raw.githubusercontent.com/MREves/mreves.github.io/main/card-data/000_pairs_image_cardback.jpg";
 
+
 // ----------------
 // create functions:
 // ----------------
@@ -64,9 +65,10 @@ const onCardClick = (index) => {
     totalClicks--;
   }
 
-
   setScoreText();
 }
+
+
 
 const onSelectChange = (deckName) => {
   console.log(deckName);
@@ -161,6 +163,11 @@ const dealCards = ()=>
     table.appendChild(flipCard);
   })
 };
+
+const resetButton = document.getElementById("reset")
+resetButton.addEventListener("click", ()=>{
+  dealCards()
+})
 
 onload = (event) => {
   const deckNames = Object.keys(data)

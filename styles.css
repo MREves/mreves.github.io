@@ -5,7 +5,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-label, select, p {
+button {
+  background-color: white;
+}
+
+button, label, select, p {
   font-size: 1.4em;
 }
 
@@ -14,7 +18,7 @@ label, select, p {
   border-radius: 33px;
   color: white;
   margin: 2em;
-  padding: 1em 2em;
+  padding: 1em 2em 2em 2em;
 }
 
 img.image-back, image.image-picture {
