@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>Document</title>
 </head>
+
 <body onload="onload()">
-    <h1>Matching Pairs</h1>
-    <label for="cards">Choose a card deck:</label>
-    <select id="cards">
-    </select>
-    <h2>Try your luck at matching all the pairs in the least possible moves!</h2>
-    <h2 id="score">Clicks: 0</h2>
+    <div id="gamePlay">
+        <h1>Matching Pairs</h1>
+        <label for="cards">Choose a card deck:</label>&nbsp;
+        <select id="cards">
+        </select>
+        <p>Try your luck at matching all the pairs in the least possible moves!</p>
+        <h2 id="score">Clicks: 0</h2>
+    </div>
     <div id="table" width="80%" height="80%"></div>
     <script lang="javascript" src="script.js" type="module"></script>
 </body>
+
 </html>
